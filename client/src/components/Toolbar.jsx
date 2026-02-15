@@ -16,6 +16,7 @@ export default function Toolbar() {
       border-b border-[#cfcfcf]
       flex items-center
       px-[4px]
+      py-5
       gap-[2px]
     "
     >

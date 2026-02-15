@@ -48,7 +48,7 @@ export default function QGISMenuBar() {
           </button>
 
           {open === m && (
-            <div className="absolute left-0 top-7 w-56 bg-[#efefef] border border-[#bfbfbf] shadow-md">
+            <div className="absolute left-0 top-7 w-56 z-[9999] bg-[#efefef] border border-[#bfbfbf] shadow-md">
               {MENU_CONFIG[m].map((item, i) =>
                 item.type === "separator" ? (
                   <div key={i} className="border-t border-[#cfcfcf] my-1" />

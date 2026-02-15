@@ -57,5 +57,5 @@ export const MENU_CONFIG = {
 
   Processing: [{ label: "Toolbox", action: "openProcessing" }],
 
-  Help: [{ label: "About" }],
+  Help: [{ label: "About", action: "aboutSection" }],
 };

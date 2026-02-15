@@ -39,6 +39,7 @@ export default function App() {
           fields={schema.fields}
           onClose={() => dispatch(closeModal())}
           onRun={() => console.log("Run tool:", activeTool)}
+          runLabel={schema.runLabel} // 👈 ADD THIS
         />
       )}
     </div>

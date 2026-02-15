@@ -13,6 +13,8 @@ export default function ToolModal({
   progress = 0,
   onClose,
   onRun,
+  runLabel = "Run", // 👈 ADD
+  toolIcon = ICON, // 👈 ADD
 }) {
   const [tab, setTab] = useState("params");
 
@@ -24,7 +26,7 @@ export default function ToolModal({
         {/* Title bar */}
         <div className="h-8 bg-[#1f1c8f] text-white flex items-center justify-between px-3">
           <div className="flex items-center gap-2">
-            <img src={ICON} className="w-4 h-4" />
+            <img src={toolIcon} className="w-4 h-4" />
             <span>{title}</span>
           </div>
           <button onClick={onClose}>✕</button>
@@ -77,7 +79,7 @@ export default function ToolModal({
 
           <Btn onClick={onClose}>Cancel</Btn>
           <Btn onClick={onRun} primary>
-            Run
+            {runLabel}
           </Btn>
           <Btn onClick={onClose}>Close</Btn>
           <Btn>Help</Btn>

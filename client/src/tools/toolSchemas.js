@@ -167,4 +167,17 @@ export const TOOL_SCHEMAS = {
       { label: "Predicate", type: "text", value: "intersects" },
     ],
   },
+
+  // About Section
+  aboutSection: {
+    title: "About",
+    toolTitle: "Contact",
+    description:
+      "Developed By: Zain Ul Abdin \n Send a Message to the Developer",
+    fields: [
+      { label: "Email", type: "text" },
+      { label: "Message", type: "text" },
+    ],
+    runLabel: "Send",
+  },
 };
