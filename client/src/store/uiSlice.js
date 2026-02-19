@@ -20,6 +20,10 @@ const uiSlice = createSlice({
       state.activeTool = "draw";
     },
 
+    setSelectionTool: (state) => {
+      state.activeTool = "select";
+    },
+
     stopDrawing: (state) => {
       state.drawingMode = false;
       if (state.activeTool === "draw") state.activeTool = null;
@@ -83,6 +87,7 @@ const uiSlice = createSlice({
 });
 
 export const {
+  setSelectionTool,
   startDrawing,
   stopDrawing,
   setActiveTool,

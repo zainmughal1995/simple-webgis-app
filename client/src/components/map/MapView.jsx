@@ -10,7 +10,11 @@ import {
 import L from "leaflet";
 import "leaflet-draw";
 import { useSelector, useDispatch } from "react-redux";
-import { addFeature, setLayerFeatures } from "../../store/featuresSlice";
+import {
+  addFeature,
+  setLayerFeatures,
+  setSelectedFeatures,
+} from "../../store/featuresSlice";
 import { stopDrawing, clearSaveRequest } from "../../store/uiSlice";
 import "leaflet/dist/leaflet.css";
 
@@ -64,7 +68,7 @@ function MapEvents({ setContextData }) {
   return null;
 }
 
-/* ---------------- Drawing + Editing Controller ---------------- */
+/* ---------------- Drawing + Editing + Selection Controller ---------------- */
 
 function DrawingController() {
   const map = useMap();
@@ -93,7 +97,6 @@ function DrawingController() {
   /* ---------- SYNC ACTIVE LAYER ---------- */
 
   useEffect(() => {
-    // Disable editing before clearing layers
     if (editHandler.current) {
       try {
         editHandler.current.disable();
@@ -165,6 +168,86 @@ function DrawingController() {
     };
   }, [editingEnabled, activeTool, map]);
 
+  /* ---------- SELECTION TOOL ---------- */
+
+  useEffect(() => {
+    if (activeTool !== "select") {
+      map.dragging.enable();
+      return;
+    }
+
+    map.dragging.disable(); // 🔥 disable panning
+
+    let startLatLng = null;
+    let box = null;
+
+    const onMouseDown = (e) => {
+      startLatLng = e.latlng;
+    };
+
+    const onMouseMove = (e) => {
+      if (!startLatLng) return;
+
+      if (!box) {
+        box = L.rectangle(L.latLngBounds(startLatLng, e.latlng), {
+          color: "blue",
+          weight: 1,
+          fillOpacity: 0.1,
+        }).addTo(map);
+      } else {
+        box.setBounds(L.latLngBounds(startLatLng, e.latlng));
+      }
+    };
+
+    const onMouseUp = (e) => {
+      if (!startLatLng) return;
+
+      const bounds = L.latLngBounds(startLatLng, e.latlng);
+      const selectedIndices = [];
+
+      if (featuresByLayer[activeLayerId]) {
+        featuresByLayer[activeLayerId].forEach((feature, index) => {
+          const layer = L.geoJSON(feature);
+          let intersects = false;
+
+          layer.eachLayer((l) => {
+            if (l.getBounds && bounds.intersects(l.getBounds()))
+              intersects = true;
+            if (l.getLatLng && bounds.contains(l.getLatLng()))
+              intersects = true;
+          });
+
+          if (intersects) selectedIndices.push(index);
+        });
+      }
+
+      dispatch(
+        setSelectedFeatures({
+          layerId: activeLayerId,
+          indices: selectedIndices,
+        }),
+      );
+
+      if (box) {
+        map.removeLayer(box);
+        box = null;
+      }
+
+      startLatLng = null;
+    };
+
+    map.on("mousedown", onMouseDown);
+    map.on("mousemove", onMouseMove);
+    map.on("mouseup", onMouseUp);
+
+    return () => {
+      map.off("mousedown", onMouseDown);
+      map.off("mousemove", onMouseMove);
+      map.off("mouseup", onMouseUp);
+      map.dragging.enable();
+    };
+  }, [activeTool, featuresByLayer, activeLayerId, map, dispatch]);
+
   /* ---------- SAVE ---------- */
 
   useEffect(() => {
@@ -176,7 +259,6 @@ function DrawingController() {
       updated.push(layer.toGeoJSON());
     });
 
-    // Disable edit before Redux update
     if (editHandler.current) {
       try {
         editHandler.current.disable();
@@ -204,6 +286,7 @@ const MapView = () => {
   const featuresByLayer = useSelector((s) => s.features.byLayer);
   const activeLayerId = useSelector((s) => s.layers.activeLayerId);
   const activeTool = useSelector((s) => s.ui.activeTool);
+  const selected = useSelector((s) => s.features.selected);
 
   const current = BASEMAPS[basemap] || BASEMAPS.osm;
   const [contextData, setContextData] = useState(null);
@@ -238,7 +321,29 @@ const MapView = () => {
           if (layerId === activeLayerId && activeTool === "vertex") return null;
 
           return features.map((feature, index) => (
-            <GeoJSON key={`${layerId}-${index}`} data={feature} />
+            <GeoJSON
+              key={`${layerId}-${index}`}
+              data={feature}
+              pointToLayer={(feature, latlng) => {
+                const isSelected = selected[layerId]?.includes(index);
+
+                return L.circleMarker(latlng, {
+                  radius: 6,
+                  color: isSelected ? "yellow" : "#3388ff",
+                  weight: 2,
+                  fillColor: isSelected ? "yellow" : "#3388ff",
+                  fillOpacity: 1,
+                });
+              }}
+              style={() => {
+                const isSelected = selected[layerId]?.includes(index);
+
+                return {
+                  color: isSelected ? "yellow" : "#3388ff",
+                  weight: isSelected ? 3 : 2,
+                };
+              }}
+            />
           ));
         })}
       </MapContainer>

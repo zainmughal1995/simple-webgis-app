@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   byLayer: {}, // { layerId: [geojson, geojson] }
+  selected: {}, // { layerId: [featureIndex, featureIndex] }
 };
 
 const featuresSlice = createSlice({
@@ -22,8 +23,23 @@ const featuresSlice = createSlice({
       const { layerId, features } = action.payload;
       state.byLayer[layerId] = features;
     },
+
+    setSelectedFeatures: (state, action) => {
+      const { layerId, indices } = action.payload;
+      state.selected[layerId] = indices;
+    },
+
+    clearAllSelections: (state) => {
+      state.selected = {};
+    },
   },
 });
 
-export const { addFeature, setLayerFeatures } = featuresSlice.actions;
+export const {
+  addFeature,
+  setLayerFeatures,
+  setSelectedFeatures,
+  clearAllSelections,
+} = featuresSlice.actions;
+
 export default featuresSlice.reducer;

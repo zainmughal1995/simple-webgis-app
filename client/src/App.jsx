@@ -12,6 +12,7 @@ import DigitizationToolbar from "./components/toolbars/digitization/Digitization
 import AnnotationsToolbar from "./components/toolbars/annotations/AnnotationsToolbar";
 import AttributesToolbar from "./components/toolbars/attributes/AttributesToolbar";
 import ProjectToolbar from "./components/toolbars/project/ProjectToolbar";
+import SelectionToolbar from "./components/toolbars/selection/SelectionToolbar";
 
 import LeftPanel from "./components/layout/LeftPanel";
 import RightPanel from "./components/layout/RightPanel";
@@ -47,6 +48,11 @@ const App = () => {
       project: (
         <SortableToolbarWrapper id="project">
           <ProjectToolbar />
+        </SortableToolbarWrapper>
+      ),
+      selection: (
+        <SortableToolbarWrapper id="selection">
+          <SelectionToolbar />
         </SortableToolbarWrapper>
       ),
     }),
