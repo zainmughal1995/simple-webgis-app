@@ -30,6 +30,7 @@ function Divider() {
 
 export default function LayersPanel() {
   const { items: layers, activeLayerId } = useSelector((s) => s.layers);
+  const editingEnabled = useSelector((s) => s.ui.editingEnabled); // 🔥 NEW
   const dispatch = useDispatch();
 
   const [contextMenu, setContextMenu] = useState(null);
@@ -38,7 +39,10 @@ export default function LayersPanel() {
   const handleContextMenu = (e, layer) => {
     e.preventDefault();
 
-    dispatch(setActiveLayer(layer.id));
+    // 🚫 Block layer switching if editing
+    if (!editingEnabled) {
+      dispatch(setActiveLayer(layer.id));
+    }
 
     setContextMenu({
       x: e.clientX,
@@ -87,10 +91,20 @@ export default function LayersPanel() {
         return (
           <div
             key={l.id}
-            onClick={() => dispatch(setActiveLayer(l.id))}
+            onClick={() => {
+              if (!editingEnabled) {
+                dispatch(setActiveLayer(l.id));
+              }
+            }}
             onContextMenu={(e) => handleContextMenu(e, l)}
-            className={`flex items-center gap-2 px-2 py-[3px] cursor-pointer
-              ${isActive ? "bg-[#c9e6ff]" : "hover:bg-[#dcdcdc]"}`}
+            className={`flex items-center gap-2 px-2 py-[3px]
+              ${
+                editingEnabled
+                  ? "cursor-not-allowed opacity-60"
+                  : "cursor-pointer hover:bg-[#dcdcdc]"
+              }
+              ${isActive ? "bg-[#c9e6ff]" : ""}
+            `}
           >
             <input
               type="checkbox"
