@@ -1,21 +1,40 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const saved = localStorage.getItem("layers");
+const initialState = [
+  {
+    id: "1",
+    name: "Cities",
+    geomType: "point",
+    visible: true,
+  },
+  {
+    id: "2",
+    name: "Road Network",
+    geomType: "line",
+    visible: true,
+  },
+  {
+    id: "3",
+    name: "District Boundaries",
+    geomType: "polygon",
+    visible: false,
+  },
+];
 
 const layersSlice = createSlice({
   name: "layers",
-  initialState: saved ? JSON.parse(saved) : [],
+  initialState,
 
   reducers: {
     addLayer: (state, action) => {
       state.push(action.payload);
-      localStorage.setItem("layers", JSON.stringify(state));
     },
 
     toggleLayer: (state, action) => {
-      const l = state.find((x) => x.id === action.payload);
-      if (l) l.visible = !l.visible;
-      localStorage.setItem("layers", JSON.stringify(state));
+      const layer = state.find((l) => l.id === action.payload);
+      if (layer) {
+        layer.visible = !layer.visible;
+      }
     },
   },
 });
