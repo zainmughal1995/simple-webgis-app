@@ -1,5 +1,7 @@
 import React, { useMemo } from "react";
 
+import "leaflet-draw/dist/leaflet.draw.css";
+
 import ProjectBar from "./components/common/ProjectBar";
 import Toolbar from "./components/toolbars/Toolbar";
 import SortableToolbarWrapper from "./components/toolbars/SortableToolbarWrapper";

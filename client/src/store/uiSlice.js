@@ -10,9 +10,17 @@ const uiSlice = createSlice({
     hasMap: false,
     basemap: "osm",
     editingEnabled: false,
+    drawingMode: false, // 🔥 NEW
   },
 
   reducers: {
+    startDrawing: (state) => {
+      state.drawingMode = true;
+    },
+
+    stopDrawing: (state) => {
+      state.drawingMode = false;
+    },
     openModal: (state, action) => {
       state.modalOpen = true;
       state.activeTool = action.payload || null;
@@ -53,6 +61,8 @@ const uiSlice = createSlice({
 });
 
 export const {
+  startDrawing,
+  stopDrawing,
   openModal,
   closeModal,
   openRightPanel,

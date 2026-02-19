@@ -1,6 +1,10 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleEditing } from "../../../store/uiSlice";
+import {
+  toggleEditing,
+  startDrawing,
+  stopDrawing,
+} from "../../../store/uiSlice";
 import ToolButton from "../../common/ToolButton";
 
 const ICONS = {
@@ -17,12 +21,12 @@ const DigitizationToolbar = () => {
 
   const activeLayerId = useSelector((s) => s.layers.activeLayerId);
   const editingEnabled = useSelector((s) => s.ui.editingEnabled);
+  const drawingMode = useSelector((s) => s.ui.drawingMode);
 
   const noLayer = !activeLayerId;
 
   return (
     <div className="flex items-center px-2 py-1 border-b border-gray-200 gap-1">
-      {/* Enable Editing */}
       <ToolButton
         icon={ICONS.enable}
         tooltip="Enable Editing"
@@ -31,12 +35,14 @@ const DigitizationToolbar = () => {
         onClick={() => dispatch(toggleEditing())}
       />
 
-      {/* Other buttons */}
       <ToolButton
         icon={ICONS.create}
         tooltip="Create Feature"
         disabled={noLayer || !editingEnabled}
+        active={drawingMode}
+        onClick={() => dispatch(drawingMode ? stopDrawing() : startDrawing())}
       />
+
       <ToolButton
         icon={ICONS.move}
         tooltip="Move Feature"

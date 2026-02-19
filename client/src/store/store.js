@@ -5,6 +5,7 @@ import toolbarReducer from "./toolbarSlice";
 import panelReducer from "./panelSlice";
 import mapReducer from "./mapSlice";
 import layoutReducer from "./layoutSlice";
+import featuresReducer from "./featuresSlice"; // 🔥 NEW
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     panels: panelReducer, // 🔥 THIS LINE MUST EXIST
     map: mapReducer,
     layout: layoutReducer,
+    features: featuresReducer, // 🔥 NEW
   },
 });
