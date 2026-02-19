@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  order: ["digitization", "annotations"],
+  order: ["digitization", "annotations", "attributes"],
   toolbars: {
     digitization: true,
     annotations: true,
+    attributes: true,
   },
 };
 

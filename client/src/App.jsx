@@ -8,6 +8,7 @@ import SortableToolbarWrapper from "./components/toolbars/SortableToolbarWrapper
 
 import DigitizationToolbar from "./components/toolbars/digitization/DigitizationToolbar";
 import AnnotationsToolbar from "./components/toolbars/annotations/AnnotationsToolbar";
+import AttributesToolbar from "./components/toolbars/attributes/AttributesToolbar";
 
 import LeftPanel from "./components/layout/LeftPanel";
 import RightPanel from "./components/layout/RightPanel";
@@ -25,6 +26,11 @@ const App = () => {
       annotations: (
         <SortableToolbarWrapper id="annotations">
           <AnnotationsToolbar />
+        </SortableToolbarWrapper>
+      ),
+      attributes: (
+        <SortableToolbarWrapper id="attributes">
+          <AttributesToolbar />
         </SortableToolbarWrapper>
       ),
     }),
