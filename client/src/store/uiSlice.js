@@ -9,6 +9,7 @@ const uiSlice = createSlice({
     rightPanelOpen: true,
     hasMap: false,
     basemap: "osm",
+    editingEnabled: false,
   },
 
   reducers: {
@@ -45,6 +46,9 @@ const uiSlice = createSlice({
     setBasemap: (state, action) => {
       state.basemap = action.payload;
     }, // 👈 NEW
+    toggleEditing: (state) => {
+      state.editingEnabled = !state.editingEnabled;
+    },
   },
 });
 
@@ -57,6 +61,7 @@ export const {
   openMap,
   closeMap,
   setBasemap,
+  toggleEditing,
 } = uiSlice.actions;
 
 export default uiSlice.reducer;

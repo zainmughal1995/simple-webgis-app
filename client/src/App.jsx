@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 
 import ProjectBar from "./components/common/ProjectBar";
 import Toolbar from "./components/toolbars/Toolbar";
@@ -12,18 +12,22 @@ import RightPanel from "./components/layout/RightPanel";
 import CenterPanel from "./components/layout/CenterPanel";
 
 const App = () => {
-  const toolbarComponents = {
-    digitization: (
-      <SortableToolbarWrapper id="digitization">
-        <DigitizationToolbar />
-      </SortableToolbarWrapper>
-    ),
-    annotations: (
-      <SortableToolbarWrapper id="annotations">
-        <AnnotationsToolbar />
-      </SortableToolbarWrapper>
-    ),
-  };
+  // ✅ Memoized so components are not recreated on every render
+  const toolbarComponents = useMemo(
+    () => ({
+      digitization: (
+        <SortableToolbarWrapper id="digitization">
+          <DigitizationToolbar />
+        </SortableToolbarWrapper>
+      ),
+      annotations: (
+        <SortableToolbarWrapper id="annotations">
+          <AnnotationsToolbar />
+        </SortableToolbarWrapper>
+      ),
+    }),
+    [],
+  );
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
