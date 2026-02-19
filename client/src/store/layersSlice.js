@@ -1,25 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = [
-  {
-    id: "1",
-    name: "Cities",
-    geomType: "point",
-    visible: true,
-  },
-  {
-    id: "2",
-    name: "Road Network",
-    geomType: "line",
-    visible: true,
-  },
-  {
-    id: "3",
-    name: "District Boundaries",
-    geomType: "polygon",
-    visible: false,
-  },
-];
+const initialState = {
+  activeLayerId: "1", // default active
+  items: [
+    { id: "1", name: "Cities", geomType: "point", visible: true },
+    { id: "2", name: "Road Network", geomType: "line", visible: true },
+    {
+      id: "3",
+      name: "District Boundaries",
+      geomType: "polygon",
+      visible: false,
+    },
+  ],
+};
 
 const layersSlice = createSlice({
   name: "layers",
@@ -36,8 +29,11 @@ const layersSlice = createSlice({
         layer.visible = !layer.visible;
       }
     },
+    setActiveLayer: (state, action) => {
+      state.activeLayerId = action.payload;
+    },
   },
 });
 
-export const { addLayer, toggleLayer } = layersSlice.actions;
+export const { addLayer, toggleLayer, setActiveLayer } = layersSlice.actions;
 export default layersSlice.reducer;

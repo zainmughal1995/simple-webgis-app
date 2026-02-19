@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleLayer } from "../../../store/layersSlice";
+import { toggleLayer, setActiveLayer } from "../../../store/layersSlice";
 
 /* ---------------- Layer Icon ---------------- */
 
@@ -29,7 +29,7 @@ function Divider() {
 /* ---------------- LayersPanel ---------------- */
 
 export default function LayersPanel() {
-  const layers = useSelector((s) => s.layers);
+  const { items: layers, activeLayerId } = useSelector((s) => s.layers);
   const dispatch = useDispatch();
 
   const [contextMenu, setContextMenu] = useState(null);
@@ -37,6 +37,8 @@ export default function LayersPanel() {
 
   const handleContextMenu = (e, layer) => {
     e.preventDefault();
+
+    dispatch(setActiveLayer(layer.id));
 
     setContextMenu({
       x: e.clientX,
@@ -79,24 +81,32 @@ export default function LayersPanel() {
       className="relative flex-1 bg-[#f8f8f8] text-[12px]"
       onClick={closeMenu}
     >
-      {layers.map((l) => (
-        <div
-          key={l.id}
-          onContextMenu={(e) => handleContextMenu(e, l)}
-          className="flex items-center gap-2 px-2 py-[3px] hover:bg-[#dcdcdc] cursor-pointer"
-        >
-          <input
-            type="checkbox"
-            checked={l.visible}
-            onChange={() => dispatch(toggleLayer(l.id))}
-          />
+      {layers.map((l) => {
+        const isActive = l.id === activeLayerId;
 
-          <LayerIcon type={l.geomType} />
-          <span>{l.name}</span>
-        </div>
-      ))}
+        return (
+          <div
+            key={l.id}
+            onClick={() => dispatch(setActiveLayer(l.id))}
+            onContextMenu={(e) => handleContextMenu(e, l)}
+            className={`flex items-center gap-2 px-2 py-[3px] cursor-pointer
+              ${isActive ? "bg-[#c9e6ff]" : "hover:bg-[#dcdcdc]"}`}
+          >
+            <input
+              type="checkbox"
+              checked={l.visible}
+              onChange={() => dispatch(toggleLayer(l.id))}
+              onClick={(e) => e.stopPropagation()}
+            />
+
+            <LayerIcon type={l.geomType} />
+            <span>{l.name}</span>
+          </div>
+        );
+      })}
 
       {/* ---------- Context Menu ---------- */}
+
       {contextMenu && (
         <div
           ref={menuRef}
