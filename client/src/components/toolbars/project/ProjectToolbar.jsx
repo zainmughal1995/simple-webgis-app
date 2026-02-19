@@ -1,19 +1,20 @@
 import React from "react";
 import ToolButton from "../../common/ToolButton";
 
+import newProjectIcon from "../../../assets/icons/toolbar_project/new_project.png";
+import openProjectIcon from "../../../assets/icons/toolbar_project/open_project.png";
+import saveProjectIcon from "../../../assets/icons/toolbar_project/save_project.png";
+import newLayoutManagerIcon from "../../../assets/icons/toolbar_project/new_print_layout.png";
+import layoutManagerIcon from "../../../assets/icons/toolbar_project/show_layout_manager.png";
+import styleManagerIcon from "../../../assets/icons/toolbar_project/style_manager.png";
+
 const ICONS = {
-  newProject:
-    "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/file-plus.svg",
-  openProject:
-    "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/folder-open.svg",
-  saveProject:
-    "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/save.svg",
-  newLayout:
-    "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/printer.svg",
-  layoutManager:
-    "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/layout.svg",
-  styleManager:
-    "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/palette.svg",
+  newProject: newProjectIcon,
+  openProject: openProjectIcon,
+  saveProject: saveProjectIcon,
+  newLayout: newLayoutManagerIcon,
+  layoutManager: layoutManagerIcon,
+  styleManager: styleManagerIcon,
 };
 
 const ProjectToolbar = () => {

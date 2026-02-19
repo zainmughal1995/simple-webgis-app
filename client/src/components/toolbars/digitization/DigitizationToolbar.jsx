@@ -9,31 +9,63 @@ import {
 } from "../../../store/uiSlice";
 import ToolButton from "../../common/ToolButton";
 
+import toggleEditingIcon from "../../../assets/icons/toolbar_digitization/toggle_editing.png";
+import saveEditsIcon from "../../../assets/icons/toolbar_digitization/save_edits.png";
+import vertexToolIcon from "../../../assets/icons/toolbar_digitization/vertex_tool.png";
+import cutFeaturesIcon from "../../../assets/icons/toolbar_digitization/cut_features.png";
+
+// Dynamic Icons:
+import addPointIcon from "../../../assets/icons/toolbar_digitization/add_point.png";
+import addLineIcon from "../../../assets/icons/toolbar_digitization/add_line.png";
+import addPolygonIcon from "../../../assets/icons/toolbar_digitization/add_polygon.png";
+import deleteSelectedIcon from "../../../assets/icons/toolbar_digitization/delete_selected.png";
+import copyFeaturesIcon from "../../../assets/icons/toolbar_digitization/copy_features.png";
+import pasteFeaturesIcon from "../../../assets/icons/toolbar_digitization/paste_features.png";
+import redoIcon from "../../../assets/icons/toolbar_digitization/redo.png";
+import undoIcon from "../../../assets/icons/toolbar_digitization/undo.png";
+
 const ICONS = {
-  enable: "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/power.svg",
-  save: "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/save.svg",
-  create:
-    "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/plus-square.svg",
-  vertex:
-    "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/pen-tool.svg",
-  delete: "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/trash-2.svg",
-  cut: "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/scissors.svg",
-  copy: "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/copy.svg",
-  paste:
-    "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/clipboard.svg",
-  undo: "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/undo-2.svg",
-  redo: "https://cdn.jsdelivr.net/npm/lucide-static@latest/icons/redo-2.svg",
+  enable: toggleEditingIcon,
+  save: saveEditsIcon,
+  vertex: vertexToolIcon,
+  delete: deleteSelectedIcon,
+  cut: cutFeaturesIcon,
+  copy: copyFeaturesIcon,
+  paste: pasteFeaturesIcon,
+  undo: undoIcon,
+  redo: redoIcon,
 };
 
 const DigitizationToolbar = () => {
   const dispatch = useDispatch();
 
-  const activeLayerId = useSelector((s) => s.layers.activeLayerId);
+  const { activeLayerId, items } = useSelector((s) => s.layers);
   const editingEnabled = useSelector((s) => s.ui.editingEnabled);
   const drawingMode = useSelector((s) => s.ui.drawingMode);
   const activeTool = useSelector((s) => s.ui.activeTool);
   const noLayer = !activeLayerId;
   const disabled = noLayer || !editingEnabled;
+
+  const activeLayer = items.find((l) => l.id === activeLayerId);
+
+  // 🔥 Dynamic icon selection
+  let addIcon = null;
+  let addTooltip = "Add Feature";
+
+  if (activeLayer?.geomType === "point") {
+    addIcon = addPointIcon;
+    addTooltip = "Add Point Feature";
+  }
+
+  if (activeLayer?.geomType === "line") {
+    addIcon = addLineIcon;
+    addTooltip = "Add Line Feature";
+  }
+
+  if (activeLayer?.geomType === "polygon") {
+    addIcon = addPolygonIcon;
+    addTooltip = "Add Polygon Feature";
+  }
 
   return (
     <div className="flex items-center px-2 py-1 border-b border-gray-200 gap-1">
@@ -56,7 +88,7 @@ const DigitizationToolbar = () => {
 
       {/* Add Feature */}
       <ToolButton
-        icon={ICONS.create}
+        icon={addIcon}
         tooltip="Add Feature"
         disabled={disabled}
         active={drawingMode}
