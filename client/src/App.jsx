@@ -16,6 +16,7 @@ import SelectionToolbar from "./components/toolbars/selection/SelectionToolbar";
 
 import LeftPanel from "./components/layout/LeftPanel";
 import RightPanel from "./components/layout/RightPanel";
+import AttributeTablePanel from "./components/panels/AttributeTablePanel";
 import CenterPanel from "./components/layout/CenterPanel";
 
 const App = () => {
@@ -70,6 +71,7 @@ const App = () => {
 
         <div className="flex-1 overflow-hidden">
           <CenterPanel />
+          <AttributeTablePanel />
         </div>
 
         <RightPanel />

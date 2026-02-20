@@ -12,6 +12,9 @@ const uiSlice = createSlice({
     editingEnabled: false,
     drawingMode: false,
     saveRequested: false, // 🔥 NEW
+
+    // ✅ NEW
+    attributeTableOpen: false,
   },
 
   reducers: {
@@ -22,6 +25,11 @@ const uiSlice = createSlice({
 
     setSelectionTool: (state) => {
       state.activeTool = "select";
+    },
+
+    // ✅ NEW
+    openAttributeTable: (state) => {
+      state.attributeTableOpen = true;
     },
 
     stopDrawing: (state) => {
@@ -83,10 +91,16 @@ const uiSlice = createSlice({
     setBasemap: (state, action) => {
       state.basemap = action.payload;
     },
+
+    closeAttributeTable: (state) => {
+      state.attributeTableOpen = false;
+    },
   },
 });
 
 export const {
+  closeAttributeTable,
+  openAttributeTable,
   setSelectionTool,
   startDrawing,
   stopDrawing,

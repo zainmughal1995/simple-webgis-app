@@ -8,6 +8,15 @@ const initialState = {
       name: "Cities",
       geomType: "point",
       visible: true,
+
+      // ✅ NEW — Field schema for Attribute Table
+      fields: [
+        { name: "id", type: "number" },
+        { name: "name", type: "string" },
+        { name: "population", type: "number" },
+        { name: "province", type: "string" },
+      ],
+
       symbology: {
         color: "#ff0000",
         fillColor: "#ff0000",
@@ -20,6 +29,14 @@ const initialState = {
       name: "Road Network",
       geomType: "line",
       visible: true,
+
+      fields: [
+        { name: "id", type: "number" },
+        { name: "name", type: "string" },
+        { name: "type", type: "string" },
+        { name: "length_km", type: "number" },
+      ],
+
       symbology: {
         color: "#0000ff",
         weight: 3,
@@ -30,11 +47,19 @@ const initialState = {
       name: "District Boundaries",
       geomType: "polygon",
       visible: false,
+
+      fields: [
+        { name: "id", type: "number" },
+        { name: "name", type: "string" },
+        { name: "area_sqkm", type: "number" },
+        { name: "province", type: "string" },
+      ],
+
       symbology: {
         color: "#008000",
         fillColor: "#008000",
         weight: 2,
-        fillOpacity: 0.3,
+        fillOpacity: 0.5,
       },
     },
   ],
@@ -58,8 +83,20 @@ const layersSlice = createSlice({
     setActiveLayer: (state, action) => {
       state.activeLayerId = action.payload;
     },
+
+    setLayersState: (state, action) => {
+      return action.payload;
+    },
+
+    resetLayers: () => initialState,
   },
 });
 
-export const { addLayer, toggleLayer, setActiveLayer } = layersSlice.actions;
+export const {
+  addLayer,
+  toggleLayer,
+  setActiveLayer,
+  setLayersState,
+  resetLayers,
+} = layersSlice.actions;
 export default layersSlice.reducer;

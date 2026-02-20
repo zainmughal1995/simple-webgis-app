@@ -46,7 +46,6 @@ const MapView = () => {
       featuresByLayer,
     };
 
-    // Prevent infinite loop by shallow comparing
     if (JSON.stringify(existing) !== JSON.stringify(snapshot)) {
       dispatch(updateProjectLayers(snapshot));
     }

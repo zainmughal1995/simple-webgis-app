@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleLayer, setActiveLayer } from "../../../store/layersSlice";
 
+import { openAttributeTable } from "../../../store/uiSlice";
+
 /* ---------------- Layer Icon ---------------- */
 
 function LayerIcon({ type }) {
@@ -14,9 +16,12 @@ function LayerIcon({ type }) {
 
 /* ---------------- Menu Components ---------------- */
 
-function MenuItem({ label }) {
+function MenuItem({ label, onClick }) {
   return (
-    <div className="px-3 py-1 hover:bg-[#e6e6e6] cursor-pointer whitespace-nowrap">
+    <div
+      onClick={onClick}
+      className="px-3 py-1 hover:bg-[#e6e6e6] cursor-pointer whitespace-nowrap"
+    >
       {label}
     </div>
   );
@@ -140,6 +145,14 @@ export default function LayersPanel() {
 
           <Divider />
 
+          <MenuItem
+            label="Open Attribute Table..."
+            onClick={() => {
+              dispatch(openAttributeTable());
+              closeMenu();
+            }}
+          />
+
           <MenuItem label="Duplicate Layer" />
           <MenuItem label="Remove Layer..." />
           <MenuItem label="Change Data Source..." />
@@ -151,7 +164,6 @@ export default function LayersPanel() {
           <MenuItem label="Export ▶" />
           <MenuItem label="Styles ▶" />
           <MenuItem label="Add Layer Notes..." />
-          <MenuItem label="Properties..." />
         </div>
       )}
     </div>

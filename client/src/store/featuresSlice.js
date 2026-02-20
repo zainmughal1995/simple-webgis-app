@@ -32,14 +32,22 @@ const featuresSlice = createSlice({
     clearAllSelections: (state) => {
       state.selected = {};
     },
+
+    setFeaturesState: (state, action) => {
+      return action.payload;
+    },
+
+    resetFeatures: () => initialState,
   },
 });
 
 export const {
+  resetFeatures,
   addFeature,
   setLayerFeatures,
   setSelectedFeatures,
   clearAllSelections,
+  setFeaturesState,
 } = featuresSlice.actions;
 
 export default featuresSlice.reducer;

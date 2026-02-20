@@ -10,13 +10,13 @@ const projectSlice = createSlice({
   initialState,
   reducers: {
     createProject: (state, action) => {
-      const { name } = action.payload;
+      //   const { name } = action.payload;
 
       const newProject = {
         id: Date.now().toString(),
-        name,
+        name: action.payload.name,
         createdAt: new Date().toISOString(),
-        layers: [], // will be synced from layersSlice
+        layers: null,
       };
 
       state.currentProject = newProject;
